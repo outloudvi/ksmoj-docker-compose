@@ -1,0 +1,114 @@
+server:
+  hostname: 0.0.0.0
+  port: 2002
+  trustProxy:
+    - loopback
+    - uniquelocal
+  clusters: 0
+services:
+  database:
+    type: mariadb
+    host: mysql
+    port: 3306
+    username: syzoj
+    password: PASSWDGp1qVdoymvXHvehT
+    database: syzoj-ng
+  minio:
+    endpoint: http://minio:9000/
+    endpointForUser: http://ksmoj.localhost/minio/
+    endpointForJudge: null
+    accessKey: KASUMIP73LCCPXlCKljysN
+    secretKey: SECKEYb82eEwBFDhJ3PVKU
+    bucket: syzoj-ng-files
+  redis: redis://redis:6379
+  mail:
+    address: noreply@ksmoj.localhost
+    transport: smtp://noreply:kasumi@mail.ksmoj.localhost:587
+security:
+  crossOrigin:
+    enabled: true
+    whiteList:
+      - http://ksmoj.localhost
+  sessionSecret: SESSECsGDzkrK4OsbwAkC8
+  maintainceKey: MNTKEYyKABOWALlyxRB3VH
+  recaptcha:
+    secretKey: null
+    useRecaptchaNet: false
+    proxyUrl: null
+  rateLimit:
+    maxRequests: 200
+    durationSeconds: 10
+preference:
+  siteName: KasumiOJ Next
+  security:
+    recaptchaEnabled: false
+    recaptchaKey: null
+    requireEmailVerification: true
+    allowUserChangeUsername: true
+    allowEveryoneCreateProblem: true
+    allowNonPrivilegedUserEditPublicProblem: true
+    allowOwnerManageProblemPermission: false
+    allowOwnerDeleteProblem: true
+    allowEveryoneCreateDiscussion: true
+    discussionDefaultPublic: true
+    discussionReplyDefaultPublic: true
+  pagination:
+    homepageUserList: 10
+    homepageProblemList: 10
+    problemSet: 50
+    searchProblemsPreview: 7
+    submissions: 10
+    submissionStatistics: 10
+    userList: 30
+    userAuditLogs: 10
+    discussions: 10
+    searchDiscussionsPreview: 7
+    discussionReplies: 40
+    discussionRepliesHead: 20
+    discussionRepliesMore: 20
+  misc:
+    appLogo: default
+    googleAnalyticsId: null
+    gravatarCdn: https://gravatar.com
+    redirectLegacyUrls: false
+    legacyContestsEntryUrl: null
+    homepageUserListOnMainView: true
+    sortUserByRating: false
+    renderMarkdownInUserBio: false
+    discussionReactionEmojis: [👍, 👎, 😄, 😕, ❤️, 🤔, 🤣, 🌿, 🍋, 🕊️]
+    discussionReactionAllowCustomEmojis: true
+  serverSideOnly:
+    discussionReactionCustomEmojisBlacklist: /(\uD83C[\uDDE6-\uDDFF]){2}/
+resourceLimit:
+  problemTestdataFiles: 40
+  problemTestdataSize: 134217728
+  problemAdditionalFileFiles: 40
+  problemAdditionalFileSize: 134217728
+  problemTestcases: 20
+  problemTimeLimit: 2000
+  problemMemoryLimit: 512
+  submissionFileSize: 10485760
+queryLimit:
+  problemSet: 100
+  submissions: 10
+  submissionStatistics: 10
+  searchUser: 10
+  searchGroup: 10
+  userList: 100
+  userAuditLogs: 20
+  discussions: 20
+  discussionReplies: 50
+judge:
+  limit:
+    compilerMessage: 524288
+    outputSize: 104857600
+    dataDisplay: 128
+    dataDisplayForSubmitAnswer: 128
+    stderrDisplay: 5120
+eventReport:
+  telegramBotToken: null
+  telegramApiRoot: null
+  sentTo: "@example"
+  proxyUrl: null
+vendor:
+  ip2region: /app/node_modules/ip2region/data/ip2region.db

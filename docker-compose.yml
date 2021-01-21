@@ -1,0 +1,74 @@
+version: "3"
+services:
+  minio:
+    image: minio/minio
+    volumes:
+      - minio:/data
+    environment:
+      - MINIO_ACCESS_KEY=KASUMIP73LCCPXlCKljysN
+      - MINIO_SECRET_KEY=SECKEYb82eEwBFDhJ3PVKU
+    networks:
+      - syzojng
+    command: ["server", "/data"]
+  mysql:
+    image: mariadb:10.5
+    volumes:
+      - mysql-data:/var/lib/mysql
+    networks:
+      - syzojng
+    environment:
+      - MYSQL_ROOT_PASSWORD=ROTPWDZIrKxdDhNmiiyduG
+      - MYSQL_USER=syzoj
+      - MYSQL_PASSWORD=PASSWDGp1qVdoymvXHvehT
+      - MYSQL_DATABASE=syzoj-ng
+    command:
+      [
+        "--character-set-server=utf8mb4",
+        "--collation-server=utf8mb4_unicode_ci",
+      ]
+  redis:
+    image: redis:alpine3.12
+    networks:
+      - syzojng
+    volumes:
+      - redis-data:/var/lib/redis
+    command: ["redis-server", "--appendonly", "yes"]
+  app:
+    build: build/app
+    networks:
+      - syzojng
+  api:
+    build: build/api
+    networks:
+      - syzojng
+    depends_on:
+      - mysql
+      - redis
+      - minio
+    environment:
+      - MINIO_ACCESS_KEY=KASUMIP73LCCPXlCKljysN
+      - MINIO_SECRET_KEY=SECKEYb82eEwBFDhJ3PVKU
+      - SYZOJ_NG_CONFIG_FILE=/app/config.yaml
+      - WAIT_HOSTS=minio:9000,mysql:3306,redis:6379
+    volumes:
+      - ${PWD}/config/api/config.yaml:/app/config.yaml
+  nginx:
+    image: nginx:mainline-alpine
+    networks:
+      - syzojng
+    depends_on:
+      - app
+      - api
+      - minio
+    volumes:
+      - ./config/nginx:/etc/nginx/conf.d:rw
+    ports:
+      - 80:80
+      - 443:443
+networks:
+  syzojng:
+volumes:
+  mysql-data:
+  minio:
+  redis-data:
+  syzoj-data:
